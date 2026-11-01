@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="190" viewBox="0 0 500 190" font-family="system-ui, sans-serif" font-size="11">
+  <style>.fill-surface{fill:#ffffff}.fill-accent{fill:#2f6fde}.fill-accent-hover{fill:#2459b8}.fill-accent-pressed{fill:#1b468f}.fill-muted{fill:#c9c9c4}.fill-focus{fill:#f2a900}.stroke-line{stroke:#deded9}</style>
+  <rect width="500" height="190" class="fill-surface"/>
+  <g id="colors">
+    <rect x="0" y="0" width="80" height="40" class="fill-accent"/><text fill="#1d1d1b" x="0" y="54">accent #2f6fde</text>
+    <rect x="130" y="0" width="80" height="40" class="fill-accent-hover"/><text fill="#1d1d1b" x="130" y="54">accent-hover #2459b8</text>
+    <rect x="260" y="0" width="80" height="40" class="fill-accent-pressed"/><text fill="#1d1d1b" x="260" y="54">accent-pressed #1b468f</text>
+    <rect x="390" y="0" width="80" height="40" class="fill-surface stroke-line"/><text fill="#1d1d1b" x="390" y="54">surface #ffffff</text>
+    <rect x="0" y="70" width="80" height="40" class="fill-muted"/><text fill="#1d1d1b" x="0" y="124">muted #c9c9c4</text>
+    <rect x="130" y="70" width="80" height="40" class="fill-focus"/><text fill="#1d1d1b" x="130" y="124">focus #f2a900</text>
+  </g>
+  <g id="type"><text fill="#1d1d1b" x="0" y="154" font-size="14" font-weight="600">label 14/600</text><text fill="#1d1d1b" x="0" y="178" font-size="13">body 13/400</text></g>
+</svg>

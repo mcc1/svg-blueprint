@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="460" height="200" viewBox="0 0 460 200" font-family="system-ui, sans-serif">
+  <image href="default.svg" x="0" y="20" width="120" height="36"/>
+  <image href="hover.svg" x="330" y="20" width="120" height="36"/>
+  <image href="pressed.svg" x="330" y="140" width="120" height="36"/>
+  <image href="focus.svg" x="-3" y="137" width="126" height="42"/>
+  <g class="annotation" fill="#e0218a" stroke="#e0218a" font-size="10">
+    <line x1="130" y1="32" x2="320" y2="32"/><path d="M320 32 l-8 -4 v8z" stroke="none"/>
+    <text x="225" y="24" text-anchor="middle" stroke="none">pointer enter · 120ms ease-out</text>
+    <line x1="320" y1="46" x2="130" y2="46"/><path d="M130 46 l8 -4 v8z" stroke="none"/>
+    <text x="225" y="62" text-anchor="middle" stroke="none">pointer leave · 120ms ease-out</text>
+    <line x1="380" y1="64" x2="380" y2="132"/><path d="M380 132 l-4 -8 h8z" stroke="none"/>
+    <text x="374" y="100" text-anchor="end" stroke="none">pointer down</text>
+    <line x1="400" y1="132" x2="400" y2="64"/><path d="M400 64 l-4 8 h8z" stroke="none"/>
+    <text x="406" y="96" stroke="none">pointer up,</text><text x="406" y="108" stroke="none">fires click</text>
+    <line x1="60" y1="64" x2="60" y2="128"/><path d="M60 128 l-4 -8 h8z" stroke="none"/>
+    <text x="66" y="100" stroke="none">Tab</text>
+  </g>
+</svg>

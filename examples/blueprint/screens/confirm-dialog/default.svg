@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="140" viewBox="0 0 320 140" data-component="confirm-dialog" data-state="default" font-family="system-ui, sans-serif">
+  <style>.fill-surface{fill:#ffffff}.fill-accent{fill:#2f6fde}.fill-accent-hover{fill:#2459b8}.fill-accent-pressed{fill:#1b468f}.fill-muted{fill:#c9c9c4}.text-on-accent{fill:#ffffff}.text-muted{fill:#77776f}.stroke-line{stroke:#deded9}.stroke-focus{stroke:#f2a900}</style>
+  <rect x="0.5" y="0.5" width="319" height="139" rx="10" class="fill-surface stroke-line"/>
+  <g id="title"><text x="20" y="36" font-size="14" font-weight="600" fill="#1d1d1b">Delete this item?</text></g>
+  <g id="body"><text x="20" y="58" font-size="13" class="text-muted">This cannot be undone.</text></g>
+  <image href="../../components/button/default.svg" x="184" y="88" width="120" height="36"/>
+  <g class="annotation" fill="#e0218a"><text x="300" y="82" text-anchor="end" font-size="8">right-aligned · 16 padding</text></g>
+</svg>

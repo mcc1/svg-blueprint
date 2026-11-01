@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="36" viewBox="0 0 120 36" data-component="button" data-state="disabled">
+  <style>.fill-surface{fill:#ffffff}.fill-accent{fill:#2f6fde}.fill-accent-hover{fill:#2459b8}.fill-accent-pressed{fill:#1b468f}.fill-muted{fill:#c9c9c4}.text-on-accent{fill:#ffffff}.text-muted{fill:#77776f}.stroke-line{stroke:#deded9}.stroke-focus{stroke:#f2a900}</style>
+  <g id="body"><rect x="0.5" y="0.5" width="119" height="35" rx="6" class="fill-muted"/></g>
+  <g id="label"><text x="60" y="23" text-anchor="middle" font-family="system-ui, sans-serif" font-size="14" font-weight="600" class="text-muted">Confirm</text></g>
+  <g class="annotation"><text x="118" y="10" text-anchor="end" font-size="8" fill="#e0218a">no pointer</text></g>
+</svg>
