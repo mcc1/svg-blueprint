@@ -8,7 +8,7 @@ Usage (run from the project root; file paths are relative to it):
 
 lock records a hash of each file in <blueprint-dir>/guardrails.lock, adding
 to or replacing earlier entries. An SVG is hashed together with every local
-file it references through <image href>, recursively, so a screen's hash
+file it references through <image href> or url(), recursively, so a screen's hash
 changes when a component it places changes. unlock drops entries, for files
 a reopen deleted. Re-locking and unlocking are design decisions that need
 the user's approval.
@@ -31,6 +31,7 @@ from pathlib import Path
 
 LOCK = "guardrails.lock"
 IMAGE_HREF = re.compile(r'<image\b[^>]*?\b(?:xlink:)?href="([^"#][^"]*)"', re.S)
+CSS_URL = re.compile(r'''url\(\s*["']?([^"')#][^"')]*?)["']?\s*\)''')
 
 
 def digest(path, seen=None):
@@ -40,8 +41,10 @@ def digest(path, seen=None):
     if path.suffix.lower() == ".svg":
         seen = (seen or set()) | {path}
         refs = []
-        for href in IMAGE_HREF.findall(data.decode("utf-8", "replace")):
-            if href.startswith(("data:", "http:", "https:")):
+        text = data.decode("utf-8", "replace")
+        for href in IMAGE_HREF.findall(text) + CSS_URL.findall(text):
+            href = href.strip()
+            if href.startswith(("data:", "http:", "https:", "//")):
                 continue
             target = (path.parent / href).resolve()
             if target in seen:

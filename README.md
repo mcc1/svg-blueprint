@@ -6,7 +6,7 @@ SVG is text the agent can write and diff, and a picture the human can look at. T
 
 The workflow is component-first, and nothing is implemented until its whole slice (a screen and the components it uses) is approved:
 
-1. **Inventory** every screen, the components each one uses, and every state of each component.
+1. **Inventory** every screen, the components each one uses, every state of each component, and the assets (fonts, art) the drawings need; the user decides whether to download what is missing, and what declining it costs is said up front.
 2. **Tokens**: palette, type scale, spacing.
 3. **States**: one SVG per component state; behaviour drawn as state frames joined by labelled arrows.
 4. **Approval**: the human approves each unit on its own; approved units are locked, and changing one is an explicit reopen.

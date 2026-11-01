@@ -27,7 +27,8 @@ The blueprint lives in the project at `design/blueprint/`. If the project alread
 
 ```text
 design/blueprint/
-  inventory.md                          screens and the components each places (step 1)
+  inventory.md                          screens, the components each places, assets (step 1)
+  assets/                               fonts and art downloaded for the blueprint (step 1)
   tokens/        spec.md log.md tokens.svg
   flow/          spec.md log.md flow.svg
   components/<component>/
@@ -44,7 +45,7 @@ design/blueprint/
 
 File formats: [`references/spec-format.md`](references/spec-format.md) (`spec.md`, `log.md`, `inventory.md`); [`references/svg-conventions.md`](references/svg-conventions.md) (drawing, naming, suffixes); [`references/platforms.md`](references/platforms.md) (per-platform units, states, capture, test tools); [`references/project-setup.md`](references/project-setup.md) (what to commit, `.gitignore`, test harness, CI).
 
-After any edit under the blueprint folder, run `python <skill>/scripts/build_doc.py design/blueprint`. It writes `index.html`, showing every unit with its drawings side by side, status badges and screenshots, and `_build/clean/`, every drawing with annotation and context groups removed: the reference visual guardrails compare against. It exits non-zero on any warning; fix warnings before trusting `_build/clean/`.
+After any edit under the blueprint folder, run `python <skill>/scripts/build_doc.py design/blueprint`. It writes `index.html`, showing every unit with its drawings side by side (with the Assets table's fonts applied), status badges, screenshots and any declined asset at the top, and `_build/clean/`, every drawing with annotation and context groups removed: the reference visual guardrails compare against. It exits non-zero on any warning; fix warnings before trusting `_build/clean/`.
 
 ## Steps
 
@@ -61,13 +62,18 @@ A reopen (step 4) sends a unit back to step 3 or 5.
 
 Read the section of `platforms.md` for each platform the UI ships on. Write `inventory.md`: the screens, and for each screen the components it places. For each component, write `spec.md` with its States table: the platform's states (pointer, touch, gamepad focus), plus loading, empty, error, overflow (longest real text, in every language the UI ships) and `stretched` when its size is a range. List the states that do not apply, with the reason, below the table.
 
-Done when: `inventory.md` lists every screen with its components, every component has a `spec.md` with a States table, and the user has confirmed the inventory (record the date in `inventory.md`).
+Then find the **assets** the drawings will need besides shapes and text: fonts, sprite sheets and other raster art, icons, backdrops. A drawing can show only what the blueprint folder holds: an SVG shown as an image loads no outside file, and the visual tests' rasterizer sees only what it is given. Look in the project first (asset folders, theme files, the font the code loads) and list each asset in the Assets table of `inventory.md`. For each one not found locally, the user decides:
+
+- **Download**: name the source, licence and size; download only after the user says yes, into `design/blueprint/assets/`.
+- **Decline**: say plainly what the blueprint cannot show without it, before drawing (a missing font: drawings use the fallback, so text width, truncation and every visual guardrail on text are estimates; missing art: a placeholder box of the same size), and write that consequence into the table.
+
+Done when: `inventory.md` lists every screen with its components, every component has a `spec.md` with a States table, every asset has a decision in the Assets table, and the user has confirmed the inventory (record the date in `inventory.md`).
 
 ### 2. Tokens
 
-Draw `tokens/tokens.svg` (colours with names and values, the type scale with the real font, spacing steps) and write `tokens/spec.md` with `status: draft`. Use only colours named in `tokens.svg`; propose any new colour to the user as a token change.
+Draw `tokens/tokens.svg` (colours with names and values, the type scale with the real font, spacing steps) and write `tokens/spec.md` with `status: draft`. Use only colours named in `tokens.svg`; propose any new colour to the user as a token change. Use only fonts in the Assets table; a font found later goes back to step 1 for the user's decision.
 
-Done when: the tokens are approved and locked (step 4).
+Done when: the tokens are approved and locked (step 4), together with the asset files the Assets table names.
 
 ### 3. Component states
 

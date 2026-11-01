@@ -116,6 +116,14 @@ Confirmed by the user: 2026-11-01
 |---|---|
 | main-menu | button, title-logo |
 | settings | button, slider, toggle |
+
+| asset | kind | path | used by | source | licence | decision |
+|---|---|---|---|---|---|---|
+| Cubic 11 | font | ../../public/fonts/Cubic_11.woff2 | tokens, all text | project | OFL | available |
+| Press Start 2P | font | assets/fonts/PressStart2P.ttf | title-logo | download from the designer's release page | OFL | downloaded 2026-11-01 |
+| hero sprite | sprite | | main-menu backdrop | not found | unknown | declined: grey 32x32 box; backdrop shows layout only |
 ```
 
 Components are listed in the order they are implemented within each slice.
+
+Assets table: one row per font, sprite sheet, image or icon set the drawings use. `asset` for a font is the family name exactly as drawings write it in `font-family`; `path` is from the blueprint folder, pointing at the project's own file where it has one, else at `assets/`. `source` is `project`, `system` (installed on this machine only: other machines and CI render differently), or where it was downloaded from. `decision` is `available`, `downloaded <date>`, or `declined: <fallback>; <what the blueprint cannot show>`. `build_doc.py` declares every available font on the page, lists declined assets at the top of `index.html`, and warns on a row without a decision, a missing file, or a font a drawing names that is not in the table.

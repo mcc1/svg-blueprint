@@ -24,7 +24,7 @@ Reference for steps 3 and 5 of [`SKILL.md`](../SKILL.md). Every rule here exists
 
 - Colours come from `tokens/tokens.svg`. Write them through a `<style>` block with classes named after tokens (`.fill-surface`, `.stroke-accent`), so a token value change is a find-and-replace of the value across files (a re-confirm for the units it touches, SKILL.md step 4) and a review can spot an off-token colour as a class that does not exist.
 - Give every shape and text an explicit fill, including the default black. The doc can render on a dark background, where unset fills disappear.
-- Text stays `<text>`, never converted to paths, so it remains diffable and translatable. Set `font-family` to the real product font with a generic fallback; when the product font is a pixel or web font the browser may not have, note the font and its metrics in `spec.md`, since layout depends on them.
+- Text stays `<text>`, never converted to paths, so it remains diffable and translatable. Set `font-family` to the real product font, named exactly as in the Assets table of `inventory.md`, with a generic fallback. When that font was declined, note in `spec.md` the metrics the drawing assumed, since layout depends on them.
 - Draw text with the longest realistic content in the `overflow` state, and decide truncation (ellipsis, wrap, shrink) there rather than leaving it to the implementer.
 
 ## Annotations
@@ -37,4 +37,8 @@ Reference for steps 3 and 5 of [`SKILL.md`](../SKILL.md). Every rule here exists
 - Place components with `<image href="../../components/<component>/<state>.svg" x=".." y=".." width=".." height=".."/>`, using a relative path. Do not redraw a component inside a screen, and do not use external `<use href="file.svg#id">`: browsers block it for local files.
 - `width` and `height` of each `<image>` equal the `viewBox` size of the file it references. SVG scales a placed image proportionally, so any other size distorts the component; a component shown at another size references a drawn size variant or its `stretched` state instead.
 - Screens with more than one state have a `transitions.svg` like components. Navigation between screens is drawn in `flow/flow.svg`: small copies of the screens (placed with `<image href="../screens/<screen>/<state>.svg">` at reduced size, the one place scaling is allowed) joined by labelled arrows.
-- Browsers also do not load external images inside an SVG shown through `<img>`, so `build_doc.py` writes a flattened copy of every screen into `_build/` with those images inlined. Open screens through `index.html`, not by opening the raw file.
+## Assets
+
+- An SVG shown through `<img>` or as a CSS background loads no outside file, local or remote: no placed image, no `@font-face` file, no `url()`. Open drawings through `index.html`, not as raw files: `build_doc.py` inlines every relative `<image href>` and `url()` reference as a data URI, and declares the Assets table's fonts once on the page for all drawings.
+- Reference only assets listed in the Assets table, by relative path. Raster art goes in through `<image>` at its own pixel size or an integer multiple of it, with `image-rendering: pixelated` for pixel art.
+- No remote URLs and no external `<use href="file.svg#id">`; `build_doc.py` warns on both. Place another SVG with `<image>`, or copy the shape in.

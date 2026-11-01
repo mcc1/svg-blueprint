@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Assets (owner decision 2026-11-02, from the Pixel Agents trial): step 1 finds the fonts and art the drawings need, records them in the Assets table of `inventory.md`, and the user decides to download or decline each missing one, told before drawing what declining costs. `build_doc.py` inlines drawings in shadow roots so the table's fonts, declared once on the page, reach every drawing (an SVG in `<img>` loads no outside file); inlines `url()` references; lists declined assets at the top of `index.html`; warns on undecided or missing assets, fonts not in the table, remote URLs and external `<use>`. `guardrails.py` hashes `url()` references too.
+
 ## 0.1.0 (2026-11-01)
 
 - Component-first workflow in eight steps: inventory, tokens, states, approval, screens, guardrails, implement, verify.
