@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Assets (owner decision 2026-11-02, from the Pixel Agents trial): step 1 finds the fonts and art the drawings need, records them in the Assets table of `inventory.md`, and the user decides to download or decline each missing one, told before drawing what declining costs. `build_doc.py` inlines drawings in shadow roots so the table's fonts, declared once on the page, reach every drawing (an SVG in `<img>` loads no outside file); inlines `url()` references; lists declined assets at the top of `index.html`; warns on undecided or missing assets, fonts not in the table, remote URLs and external `<use>`. `guardrails.py` hashes `url()` references too.
+- `build_doc.py` (Pixel Agents trial, owner go-ahead 2026-11-02): a placed SVG (`transitions.svg`, screens, `flow.svg`) is nested in place as an inner `<svg>` with its ids and classes prefixed, not a data-URI image, so page fonts reach its text in `index.html` and `_build/clean/` holds all text in one document; states sort by the row order of the States table, not the first mention anywhere in `spec.md`; warns when a Transitions table row has no matching arrow label in `transitions.svg` or `flow.svg`. SKILL.md says how the agent looks at `index.html` itself (localhost or a headless screenshot).
 
 ## 0.1.0 (2026-11-01)
 

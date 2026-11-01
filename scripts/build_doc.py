@@ -4,8 +4,9 @@
 Usage: python build_doc.py <blueprint-dir>
 
 Scans the unit folders tokens/, flow/, components/*/ and screens/*/,
-flattens every SVG into _build/ (relative <image> hrefs and CSS url()
-references inlined as data URIs), and writes index.html with states side
+flattens every SVG into _build/ (placed SVGs nested in place, other
+relative <image> hrefs and CSS url() references inlined as data URIs;
+Transitions table rows checked against the arrow labels), and writes index.html with states side
 by side, status badges, spec and log text, and implementation screenshots
 from shots/<unit path>/ when present. Drawings are inlined into index.html
 in their own shadow roots, so the fonts in the Assets table of
@@ -73,9 +74,59 @@ def data_uri(data, mime):
     return f"data:{mime};base64,{base64.b64encode(data).decode('ascii')}"
 
 
-def flatten(svg_path, strip=(), depth=0):
-    """Return SVG text with relative <image> hrefs and url() refs inlined as data URIs.
+def scope(text, prefix):
+    """Prefix the ids and classes of a placed SVG, so they cannot clash with the host's."""
+    ids = set(re.findall(r'(?<![\w-])id="([^"]+)"', text))
+    classes = {c for attr in re.findall(r'\bclass="([^"]*)"', text) for c in attr.split()}
+    if ids:
+        names = "|".join(re.escape(i) for i in sorted(ids, key=len, reverse=True))
+        text = re.sub(rf'((?<![\w-])id="|#)({names})(?=["\'),.{{:\s\[>+~]|$)', rf"\1{prefix}\2", text)
+    text = re.sub(r'\bclass="([^"]*)"',
+                  lambda m: 'class="' + " ".join(prefix + c for c in m.group(1).split()) + '"', text)
+    if classes:
+        names = "|".join(re.escape(c) for c in sorted(classes, key=len, reverse=True))
+        text = re.sub(r"(<style\b[^>]*>)(.*?)(</style>)",
+                      lambda m: m.group(1) + re.sub(rf"\.({names})(?![\w-])", rf".{prefix}\1", m.group(2))
+                      + m.group(3), text, flags=re.S)
+    return text
 
+
+def nest(image_attrs, svg_text, prefix):
+    """Replace a placed SVG's <image> with the SVG itself, so page fonts reach its text.
+
+    An SVG loaded as an image, data URI included, loads no font; one nested
+    in the host document uses the host's @font-face rules.
+    """
+    attrs = dict(re.findall(r'([\w:-]+)="([^"]*)"', image_attrs))
+    m = re.search(r"<svg\b([^>]*)>(.*)</svg>", svg_text, re.S)
+    if not m:
+        return None
+    own = dict(re.findall(r'([\w:-]+)="([^"]*)"', m.group(1)))
+    box = {k: attrs[k] for k in ("x", "y", "width", "height", "preserveAspectRatio") if k in attrs}
+    if "viewBox" in own:
+        box["viewBox"] = own["viewBox"]
+    else:
+        box["viewBox"] = f"0 0 {own.get('width', box.get('width', 0))} {own.get('height', box.get('height', 0))}"
+    keep = {k: v for k, v in own.items() if k.startswith("data-") or k.startswith("font") or k == "class"}
+    inner = " ".join(f'{k}="{v}"' for k, v in {**box, **keep}.items())
+    nested = scope(f"<svg {inner}>{m.group(2)}</svg>", prefix)
+    # the <image>'s own presentation (class, opacity, transform) moves to a wrapping group
+    wrap = {k: v for k, v in attrs.items()
+            if k not in box and k not in ("href", "xlink:href")}
+    if not wrap:
+        return nested
+    return "<g " + " ".join(f'{k}="{v}"' for k, v in wrap.items()) + f">{nested}</g>"
+
+
+IMAGE_ELEMENT = re.compile(r"<image\b([^>]*?)(?:/>|>\s*</image>)", re.S)
+placements = iter(range(1, 1 << 30))
+
+
+def flatten(svg_path, strip=(), depth=0):
+    """Return SVG text with placed SVGs nested in place and other relative refs inlined.
+
+    A relative <image> of an .svg file becomes a nested <svg> with prefixed
+    ids and classes; other <image> hrefs and url() refs become data URIs.
     strip lists classes removed from this file; placed SVGs always lose
     PLACED_STRIP as well.
     """
@@ -108,28 +159,47 @@ def flatten(svg_path, strip=(), depth=0):
         mime = MIME.get(target.suffix.lower()) or FONT_MIME.get(target.suffix.lower(), "application/octet-stream")
         return match.group(1) + data_uri(data, mime) + match.group(3)
 
+    def place(match):
+        href = IMAGE_HREF.search(match.group(0))
+        if not href or not href.group(2).strip().lower().endswith(".svg"):
+            return match.group(0)
+        target = (svg_path.parent / href.group(2).strip()).resolve()
+        if not target.is_file() or href.group(2).startswith(("data:", "http:", "https:", "//")):
+            return match.group(0)
+        placed = nest(match.group(1), inline_svg(flatten(target, nested, depth + 1)), f"u{next(placements)}-")
+        if placed is None:
+            warn(f"{svg_path}: {href.group(2)} has no <svg> root to nest")
+            return match.group(0)
+        return placed
+
+    text = IMAGE_ELEMENT.sub(place, text)
     return CSS_URL.sub(inline, IMAGE_HREF.sub(inline, text))
 
 
-def read_assets(root):
-    """Return the rows of the Assets table in inventory.md as dicts keyed by lower-case header."""
-    inventory = root / "inventory.md"
-    if not inventory.is_file():
-        return []
+def table(text, first):
+    """Return the rows of the markdown table whose first header cell is first, as dicts keyed by lower-case header."""
     rows, header = [], None
-    for line in inventory.read_text(encoding="utf-8").splitlines():
+    for line in text.splitlines():
         if not line.lstrip().startswith("|"):
+            if rows:
+                break
             header = None
             continue
         cells = [c.strip().strip("`").strip() for c in line.strip().strip("|").split("|")]
         if header is None:
-            if cells and cells[0].lower() == "asset":
+            if cells and cells[0].lower() == first:
                 header = [c.lower() for c in cells]
             continue
         if all(re.fullmatch(r":?-+:?", c) for c in cells if c):
             continue
         rows.append(dict(zip(header, cells)))
     return rows
+
+
+def read_assets(root):
+    """Return the rows of the Assets table in inventory.md."""
+    inventory = root / "inventory.md"
+    return table(inventory.read_text(encoding="utf-8"), "asset") if inventory.is_file() else []
 
 
 def check_assets(root, rows):
@@ -205,12 +275,33 @@ def read_spec(spec):
 
 
 def state_order(body):
-    """Sort key: default first, then the order states are first named in spec.md."""
+    """Sort key: row order of the States table; without one, default first, then first mention in spec.md."""
+    states = [row.get("state", "") for row in table(body, "state")]
+
     def key(path):
         base = path.stem.split(".")[0]
+        if base in states:
+            return (0, states.index(base), path.stem)
         found = re.search(rf"\b{re.escape(base)}\b", body)
-        return (0 if base == "default" else 1, found.start() if found else len(body), path.stem)
+        return (1 if states or base == "default" else 2, found.start() if found else len(body), path.stem)
     return key
+
+
+def check_transitions(drawing_path, body):
+    """Warn on Transitions table rows whose arrow label is missing from the drawing's annotations."""
+    rows = table(body, "from")
+    if not rows or not drawing_path.is_file():
+        return
+    notes = re.findall(r'<g\b[^>]*\bclass="[^"]*\bannotation\b[^"]*"[^>]*>(.*?)</g>',
+                       drawing_path.read_text(encoding="utf-8"), re.S)
+    texts = [re.sub(r"<[^>]+>", "", t) for n in notes for t in re.findall(r"<text\b[^>]*>(.*?)</text>", n, re.S)]
+    drawn = " ".join(" ".join(html.unescape(t).split()) for t in texts)
+    for row in rows:
+        timing = row.get("timing", "-").strip()
+        label = row.get("trigger", "") + ("" if timing in ("", "-") else f" · {timing}")
+        if " ".join(label.split()) not in drawn:
+            warn(f"{drawing_path}: no arrow labelled {label!r} for {row.get('from')} -> {row.get('to')} "
+                 "in the Transitions table")
 
 
 def svg_width(text):
@@ -263,6 +354,7 @@ def build_item(root, folder, build, families):
         width = svg_width(flat)
         style = f' style="width:{width:g}px"' if width else ""
         trans_html = f'<h4>transitions</h4><div class="transitions">{drawing(flat, style)}</div>'
+    check_transitions(folder / ("flow.svg" if folder.name == "flow" else "transitions.svg"), body)
     facts = " · ".join(f"{html.escape(k)}: {html.escape(v)}"
                        for k, v in meta.items() if k != "status")
     spec_html = f"<details><summary>spec</summary><pre>{html.escape(body)}</pre></details>" if body else ""

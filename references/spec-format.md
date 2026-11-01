@@ -41,7 +41,7 @@ One or two sentences: what the unit is for, the target platform and input types.
 | default | accent body, label | |
 | disabled | muted body and label | no hover, no focus, no click |
 
-One row per state, named exactly as its drawing without suffixes (`disabled` ↔ `disabled.svg`). Below the table, list states that do not apply and why (`Not applicable: loading, no async action`).
+One row per state, named exactly as its drawing without suffixes (`disabled` ↔ `disabled.svg`); `index.html` shows the drawings in row order. Below the table, list states that do not apply and why (`Not applicable: loading, no async action`).
 
 ### Transitions
 
@@ -50,7 +50,7 @@ One row per state, named exactly as its drawing without suffixes (`disabled` ↔
 | default | hover | pointer enter | 120ms ease-out |
 | hover | default | pointer leave | 120ms ease-out |
 
-One row per arrow in the unit's `transitions.svg` (for the flow, `flow.svg`); the two match one to one, worded identically. Timing is `<duration> <easing>`, or `-` for instant. In the flow, `from` and `to` are screen states written `<screen>/<state>` (`main-menu/default` → `settings/default`, trigger `select Settings`).
+One row per arrow in the unit's `transitions.svg` (for the flow, `flow.svg`); the two match one to one, worded identically, and `build_doc.py` warns when a row's label is missing from the drawing's annotation text. Timing is `<duration> <easing>`, or `-` for instant. In the flow, `from` and `to` are screen states written `<screen>/<state>` (`main-menu/default` → `settings/default`, trigger `select Settings`).
 
 ### Variants
 

@@ -45,7 +45,7 @@ design/blueprint/
 
 File formats: [`references/spec-format.md`](references/spec-format.md) (`spec.md`, `log.md`, `inventory.md`); [`references/svg-conventions.md`](references/svg-conventions.md) (drawing, naming, suffixes); [`references/platforms.md`](references/platforms.md) (per-platform units, states, capture, test tools); [`references/project-setup.md`](references/project-setup.md) (what to commit, `.gitignore`, test harness, CI).
 
-After any edit under the blueprint folder, run `python <skill>/scripts/build_doc.py design/blueprint`. It writes `index.html`, showing every unit with its drawings side by side (with the Assets table's fonts applied), status badges, screenshots and any declined asset at the top, and `_build/clean/`, every drawing with annotation and context groups removed: the reference visual guardrails compare against. It exits non-zero on any warning; fix warnings before trusting `_build/clean/`.
+After any edit under the blueprint folder, run `python <skill>/scripts/build_doc.py design/blueprint`. It writes `index.html`, showing every unit with its drawings side by side (with the Assets table's fonts applied), status badges, screenshots and any declined asset at the top, and `_build/clean/`, every drawing with annotation and context groups removed: the reference visual guardrails compare against. It exits non-zero on any warning; fix warnings before trusting `_build/clean/`. To look at `index.html` yourself, serve the blueprint folder on localhost (`python -m http.server --bind 127.0.0.1`) and open it in your browser tool, or take a headless browser screenshot of the file; some agent browser panes show a local file blank.
 
 ## Steps
 
