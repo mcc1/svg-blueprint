@@ -19,6 +19,7 @@ It is platform-general. Games and native apps without a standard component libra
 | `references/spec-format.md` | `spec.md` (the locked contract), `log.md` (history) and `inventory.md` |
 | `references/project-setup.md` | One-time setup in a target project: what to commit, `.gitignore`, test harness, CI |
 | `docs/design-rationale.md` | Problem, goals, non-goals, alternatives, risks; for humans deciding on the skill, not loaded by agents running it |
+| `docs/images/` | README diagrams, hand-written SVG; `workflow.svg` mirrors the steps of `SKILL.md`, so change them together. Use generic font stacks only: GitHub shows them through `<img>` |
 | `references/svg-conventions.md` | How to draw and name the files (steps 3 and 5) |
 | `references/platforms.md` | Per-target units, states, layout, capture, tests |
 | `scripts/build_doc.py` | Generates the design doc; Python 3.8+ standard library only, no dependencies |

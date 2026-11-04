@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" role="img" aria-label="One SVG file is text the agent edits and a picture the user approves. The approved drawing becomes locked guardrail tests, the implementation must pass them, and screenshots are compared back to the drawing.">
+  <title>How a blueprint connects the agent, the user and the code</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#1a4468" stroke-width="1"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto-start-reverse"><path d="M0 0L8 4L0 8z" fill="#eaf3fb"/></marker>
+    <marker id="back" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#f5b942"/></marker>
+  </defs>
+  <style>
+    text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#eaf3fb}
+    .head{font-size:15px;font-weight:600}
+    .note{font-size:12px;fill:#c3d9ec}
+    .you{font-size:12px;fill:#f5b942}
+    .code{font-family:ui-monospace,Consolas,Menlo,monospace;font-size:12px;fill:#c3d9ec}
+    .key{fill:#ffffff}
+    .cap{font-size:11px;fill:#a9c6e0}
+    .btn{font-size:12px;font-weight:600;fill:#ffffff}
+    .panel{fill:#0d2740;stroke:#8fb8dc;stroke-width:1.5}
+    .line{fill:none;stroke:#eaf3fb;stroke-width:1.5}
+    .return{fill:none;stroke:#f5b942;stroke-width:1.5;stroke-dasharray:6 4}
+  </style>
+  <rect width="900" height="430" fill="#10304f"/>
+  <rect width="900" height="430" fill="url(#grid)"/>
+
+  <!-- one file, two readers -->
+  <text x="24" y="38" class="head">The agent edits text</text>
+  <rect x="24" y="50" width="256" height="176" rx="8" class="panel"/>
+  <text x="40" y="74" class="cap">button/hover.svg</text>
+  <text x="40" y="100" class="code">&lt;g id="body"&gt;</text>
+  <text x="56" y="118" class="code">&lt;rect width="119" height="35"</text>
+  <text x="72" y="136" class="code">rx="6"</text>
+  <text x="72" y="154" class="code key">class="fill-accent-hover"/&gt;</text>
+  <text x="40" y="172" class="code">&lt;/g&gt;</text>
+  <text x="40" y="190" class="code">&lt;g id="label"&gt;</text>
+  <text x="56" y="208" class="code">&lt;text ...&gt;Confirm&lt;/text&gt;</text>
+
+  <text x="340" y="38" class="head">You approve a picture</text>
+  <rect x="340" y="50" width="240" height="176" rx="8" class="panel"/>
+  <g text-anchor="middle">
+    <rect x="356" y="66" width="100" height="32" rx="6" fill="#2f6fde"/><text x="406" y="87" class="btn">Confirm</text><text x="406" y="112" class="cap">default</text>
+    <rect x="464" y="66" width="100" height="32" rx="6" fill="#2459b8" stroke="#f5b942" stroke-width="2"/><text x="514" y="87" class="btn">Confirm</text><text x="514" y="112" class="cap">hover</text>
+    <rect x="356" y="124" width="100" height="32" rx="6" fill="#1b468f"/><text x="406" y="145" class="btn">Confirm</text><text x="406" y="170" class="cap">pressed</text>
+    <rect x="464" y="124" width="100" height="32" rx="6" fill="#c9c9c4"/><text x="514" y="145" class="btn" style="fill:#5f5f58">Confirm</text><text x="514" y="170" class="cap">disabled</text>
+  </g>
+  <text x="460" y="200" text-anchor="middle" class="you">You approve each state, one small</text>
+  <text x="460" y="216" text-anchor="middle" class="you">piece at a time; then it is locked</text>
+
+  <path d="M284 138H336" class="line" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+  <text x="310" y="128" text-anchor="middle" class="note">same</text>
+  <text x="310" y="156" text-anchor="middle" class="note">file</text>
+
+  <!-- guardrails -->
+  <text x="640" y="38" class="head">Guardrails come from it</text>
+  <rect x="640" y="50" width="236" height="176" rx="8" class="panel"/>
+  <text x="656" y="74" class="cap">written before the code exists</text>
+  <text x="656" y="100" class="code">pointer enter switches</text>
+  <text x="656" y="118" class="code">body to accent-hover</text>
+  <text x="656" y="148" class="code">disabled shows muted body</text>
+  <text x="656" y="166" class="code">and ignores click</text>
+  <text x="656" y="198" class="note">each one fails on a stub,</text>
+  <text x="656" y="214" class="note">then it is locked</text>
+  <path d="M584 138H636" class="line" marker-end="url(#arrow)"/>
+  <text x="610" y="128" text-anchor="middle" class="note">becomes</text>
+
+  <!-- code and comparison -->
+  <text x="640" y="296" class="head">The code must pass them</text>
+  <rect x="640" y="308" width="236" height="100" rx="8" class="panel"/>
+  <rect x="656" y="324" width="100" height="32" rx="6" fill="#2459b8"/><text x="706" y="345" text-anchor="middle" class="btn">Confirm</text>
+  <text x="768" y="337" class="cap">real UI</text>
+  <text x="768" y="352" class="cap">in your stack</text>
+  <text x="656" y="384" class="note">guardrails stay unedited; a wrong</text>
+  <text x="656" y="400" class="note">one is a design question for you</text>
+  <path d="M758 230V276" class="line" marker-end="url(#arrow)"/>
+
+  <text x="340" y="296" class="head">Screenshots go back to it</text>
+  <rect x="340" y="308" width="240" height="100" rx="8" class="panel"/>
+  <g text-anchor="middle">
+    <rect x="356" y="324" width="100" height="32" rx="6" fill="#2459b8"/><text x="406" y="345" class="btn">Confirm</text><text x="406" y="370" class="cap">drawing</text>
+    <rect x="464" y="324" width="100" height="32" rx="6" fill="#2459b8"/><rect x="461" y="321" width="106" height="38" rx="8" fill="none" stroke="#a9c6e0" stroke-dasharray="4 3"/><text x="514" y="345" class="btn">Confirm</text><text x="514" y="370" class="cap">screenshot</text>
+  </g>
+  <text x="460" y="396" text-anchor="middle" class="you">You decide every difference</text>
+  <path d="M636 358H584" class="line" marker-end="url(#arrow)"/>
+  <path d="M460 304V232" class="return" marker-end="url(#back)"/>
+
+  <!-- reopen -->
+  <text x="24" y="296" class="head">Changing the design</text>
+  <rect x="24" y="308" width="256" height="100" rx="8" fill="none" stroke="#f5b942" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="40" y="334" class="note">Anything approved changes only through</text>
+  <text x="40" y="352" class="note">a reopen you approve. The lock makes</text>
+  <text x="40" y="370" class="note">every other edit visible, including a</text>
+  <text x="40" y="388" class="note">component a screen places.</text>
+  <text x="472" y="268" class="you">reopen</text>
+</svg>

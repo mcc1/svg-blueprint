@@ -4,7 +4,11 @@ An agent skill for designing any user interface (game HUDs and menus, mobile and
 
 SVG is text the agent can write and diff, and a picture the human can look at. That makes it a shared language between the two: the agent draws, the human approves, and the approved drawing becomes the spec that tests are written from and the implementation is checked against. It helps most where there is no standard component library to lean on, such as game UI and custom native controls.
 
+![One SVG file is text the agent edits and a picture you approve. The approved drawing becomes locked guardrail tests, the code must pass them, and screenshots go back to the drawing.](docs/images/concept.svg)
+
 The workflow is component-first, and nothing is implemented until its whole slice (a screen and the components it uses) is approved:
+
+![The eight steps: inventory and tokens once for the whole UI; component states, approval and screens per slice; guardrails, implement and verify per unit, with reopen paths back to the design.](docs/images/workflow.svg)
 
 1. **Inventory** every screen, the components each one uses, every state of each component, and the assets (fonts, art) the drawings need; the user decides whether to download what is missing, and what declining it costs is said up front.
 2. **Tokens**: palette, type scale, spacing.
@@ -47,6 +51,7 @@ Then open `examples/blueprint/index.html`.
 | `references/spec-format.md` | Format of each unit's `spec.md` (contract) and `log.md` (history), and of `inventory.md` |
 | `references/project-setup.md` | Setup in a target project: what to commit, `.gitignore`, test harness, CI |
 | `docs/design-rationale.md` | Why the skill works this way: goals, non-goals, alternatives, risks |
+| `docs/images/` | The README diagrams |
 | `references/svg-conventions.md` | Rules for drawing and naming the SVG files |
 | `references/platforms.md` | Units, states, layout, capture and test tools per target (games, apps, web, terminal) |
 | `AGENTS.md` | Guide for agents changing this skill |

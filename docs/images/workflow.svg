@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="630" viewBox="0 0 900 630" role="img" aria-label="Workflow. Once for the whole UI: inventory, then tokens. Per slice: component states, approval, screens, approval. Per unit once the slice is approved: guardrails, implement, verify. A wrong guardrail or a preferred implementation reopens the unit.">
+  <title>svg-blueprint workflow</title>
+  <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M20 0H0V20" fill="none" stroke="#1a4468" stroke-width="1"/></pattern>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#eaf3fb"/></marker>
+    <marker id="back" markerWidth="9" markerHeight="9" refX="8" refY="4" orient="auto"><path d="M0 0L8 4L0 8z" fill="#f5b942"/></marker>
+  </defs>
+  <style>
+    text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;fill:#eaf3fb}
+    .band{fill:#153a5e;fill-opacity:.75;stroke:#2b5a85}
+    .label{font-size:11px;font-weight:600;letter-spacing:.08em;fill:#a9c6e0}
+    .node{fill:#0d2740;stroke:#8fb8dc;stroke-width:1.5}
+    .gate{fill:#0d2740;stroke:#f5b942;stroke-width:2.5}
+    .title{font-size:15px;font-weight:600}
+    .desc{font-size:12px;fill:#c3d9ec}
+    .you{font-size:12px;fill:#f5b942}
+    .edge{font-size:11.5px;fill:#eaf3fb}
+    .edge-back{font-size:11.5px;fill:#f5b942}
+    .line{fill:none;stroke:#eaf3fb;stroke-width:1.5}
+    .return{fill:none;stroke:#f5b942;stroke-width:1.5;stroke-dasharray:6 4}
+  </style>
+  <rect width="900" height="630" fill="#10304f"/>
+  <rect width="900" height="630" fill="url(#grid)"/>
+
+  <!-- bands -->
+  <rect x="24" y="14" width="852" height="132" rx="10" class="band"/>
+  <rect x="24" y="176" width="852" height="136" rx="10" class="band"/>
+  <rect x="24" y="358" width="852" height="194" rx="10" class="band"/>
+  <text x="36" y="136" class="label">ONCE FOR THE WHOLE UI</text>
+  <text x="36" y="302" class="label">PER SLICE: A SCREEN AND ITS COMPONENTS</text>
+  <text x="36" y="542" class="label">PER UNIT, ONCE THE WHOLE SLICE IS APPROVED</text>
+
+  <!-- once -->
+  <rect x="36" y="26" width="210" height="94" rx="8" class="node"/>
+  <text x="48" y="48" class="title">1 Inventory</text>
+  <text x="48" y="66" class="desc">screens, components, states,</text>
+  <text x="48" y="82" class="desc">fonts and art</text>
+  <text x="48" y="104" class="you">You confirm; decide downloads</text>
+
+  <rect x="345" y="26" width="210" height="94" rx="8" class="node"/>
+  <text x="357" y="48" class="title">2 Tokens</text>
+  <text x="357" y="66" class="desc">palette, type scale, spacing</text>
+  <text x="357" y="88" class="you">You approve; locked</text>
+
+  <path d="M250 73H341" class="line" marker-end="url(#arrow)"/>
+
+  <!-- legend -->
+  <text x="654" y="50" class="you">Amber: a decision only you make</text>
+  <path d="M654 72H692" class="return"/>
+  <text x="702" y="76" class="edge-back">goes back</text>
+  <path d="M654 96H688" class="line" marker-end="url(#arrow)"/>
+  <text x="702" y="100" class="edge">moves on</text>
+
+  <!-- tokens to first slice -->
+  <path d="M450 120V161H141V186" class="line" marker-end="url(#arrow)"/>
+
+  <!-- per slice -->
+  <rect x="36" y="190" width="210" height="94" rx="8" class="node"/>
+  <text x="48" y="212" class="title">3 Component states</text>
+  <text x="48" y="230" class="desc">one SVG per state, plus</text>
+  <text x="48" y="246" class="desc">labelled transition arrows</text>
+
+  <rect x="345" y="190" width="210" height="94" rx="8" class="gate"/>
+  <text x="357" y="212" class="title">4 Approval</text>
+  <text x="357" y="232" class="you">You approve each unit on its own</text>
+  <text x="357" y="250" class="desc">then it is locked; any later</text>
+  <text x="357" y="266" class="desc">change is a reopen</text>
+
+  <rect x="654" y="190" width="210" height="94" rx="8" class="node"/>
+  <text x="666" y="212" class="title">5 Screens</text>
+  <text x="666" y="230" class="desc">composed only from approved</text>
+  <text x="666" y="246" class="desc">components, plus the flow</text>
+
+  <path d="M250 218H341" class="line" marker-end="url(#arrow)"/>
+  <text x="295" y="210" text-anchor="middle" class="edge">drawn</text>
+  <path d="M341 254H250" class="return" marker-end="url(#back)"/>
+  <text x="295" y="270" text-anchor="middle" class="edge-back">changes, or</text>
+  <text x="295" y="284" text-anchor="middle" class="edge-back">next component</text>
+
+  <path d="M559 218H650" class="line" marker-end="url(#arrow)"/>
+  <text x="604" y="196" text-anchor="middle" class="edge">components</text>
+  <text x="604" y="210" text-anchor="middle" class="edge">approved</text>
+  <path d="M650 254H559" class="line" marker-end="url(#arrow)"/>
+  <text x="604" y="270" text-anchor="middle" class="edge">screen</text>
+  <text x="604" y="284" text-anchor="middle" class="edge">drawn</text>
+
+  <!-- slice approved -->
+  <path d="M400 284V335H141V400" class="line" marker-end="url(#arrow)"/>
+  <text x="270" y="328" text-anchor="middle" class="edge">slice approved</text>
+
+  <!-- per unit -->
+  <rect x="36" y="404" width="210" height="94" rx="8" class="node"/>
+  <text x="48" y="426" class="title">6 Guardrails</text>
+  <text x="48" y="444" class="desc">tests from the design, each</text>
+  <text x="48" y="460" class="desc">failing on a stub</text>
+  <text x="48" y="482" class="you">You approve the table; locked</text>
+
+  <rect x="345" y="404" width="210" height="94" rx="8" class="node"/>
+  <text x="357" y="426" class="title">7 Implement</text>
+  <text x="357" y="444" class="desc">test-driven; guardrails must</text>
+  <text x="357" y="460" class="desc">pass without being edited</text>
+
+  <rect x="654" y="404" width="210" height="94" rx="8" class="node"/>
+  <text x="666" y="426" class="title">8 Verify</text>
+  <text x="666" y="444" class="desc">screenshots beside each drawing</text>
+  <text x="666" y="466" class="you">You decide each difference</text>
+
+  <path d="M250 451H341" class="line" marker-end="url(#arrow)"/>
+  <path d="M559 451H650" class="line" marker-end="url(#arrow)"/>
+
+  <!-- reopen -->
+  <path d="M500 404V288" class="return" marker-end="url(#back)"/>
+  <path d="M759 404V335H500" class="return"/>
+  <text x="514" y="328" class="edge-back">reopen: back through step 3 or 5</text>
+  <text x="508" y="390" class="edge-back">a guardrail looks wrong</text>
+  <text x="767" y="390" class="edge-back">you prefer the build</text>
+
+  <!-- implementation fixed -->
+  <path d="M745 498V524H450V502" class="return" marker-end="url(#back)"/>
+  <text x="598" y="518" text-anchor="middle" class="edge-back">implementation fixed, then re-captured</text>
+
+  <!-- verified -->
+  <rect x="654" y="572" width="210" height="40" rx="20" class="node"/>
+  <text x="759" y="597" text-anchor="middle" class="title">Verified</text>
+  <path d="M820 498V568" class="line" marker-end="url(#arrow)"/>
+  <path d="M650 592H12V451H32" class="line" marker-end="url(#arrow)"/>
+  <text x="330" y="584" text-anchor="middle" class="edge">next unit of the slice</text>
+  <path d="M864 592H888V237H868" class="line" marker-end="url(#arrow)"/>
+  <text x="884" y="618" text-anchor="end" class="edge">next slice</text>
+</svg>
